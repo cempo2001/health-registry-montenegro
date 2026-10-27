@@ -1,0 +1,23 @@
+<!-- views/auth/sign-in.ejs -->
+<!DOCTYPE html>
+<html lang="sr-Latn-ME">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prijava</title>
+  </head>
+  <body>
+    <%- include("../partials/_navbar.ejs") %>
+
+    <h1>Prijava</h1>
+    <form action="/auth/sign-in" method="POST">
+      <label for="username">Korisničko ime:</label>
+      <input type="text" name="username" id="username" required />
+
+      <label for="password">Lozinka:</label>
+      <input type="password" name="password" id="password" required />
+
+      <button type="submit">Prijavi se</button>
+    </form>
+  </body>
+</html>

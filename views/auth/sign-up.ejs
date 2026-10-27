@@ -1,0 +1,26 @@
+<!-- views/auth/sign-up.ejs -->
+<!DOCTYPE html>
+<html lang="sr-Latn-ME">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registracija</title>
+  </head>
+  <body>
+    <%- include("../partials/_navbar.ejs") %>
+
+    <h1>Registracija</h1>
+    <form action="/auth/sign-up" method="POST">
+      <label for="username">Korisničko ime:</label>
+      <input type="text" name="username" id="username" required />
+
+      <label for="password">Lozinka:</label>
+      <input type="password" name="password" id="password" required />
+
+      <label for="confirmPassword">Potvrda lozinke:</label>
+      <input type="password" name="confirmPassword" id="confirmPassword" required />
+
+      <button type="submit">Registruj se</button>
+    </form>
+  </body>
+</html>
