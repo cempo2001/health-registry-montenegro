@@ -10,8 +10,34 @@
   <body>
     <%- include("./partials/_navbar.ejs") %>
     <main>
-      <h1>Registry of Healthcare Institutions and Staff</h1>
-      <p>Public and private healthcare institutions in one place, together with the staff who work in them.</p>
+      <section class="hero">
+        <h1>Registry of Healthcare Institutions and Staff</h1>
+        <p>Public and private healthcare institutions in one place, together with the staff who work in them.</p>
+        <div class="hero-actions">
+          <a class="btn" href="/institutions">Browse institutions</a>
+          <% if (!user) { %>
+            <a class="btn btn-secondary" href="/auth/sign-up">Create an account</a>
+          <% } else { %>
+            <a class="btn btn-secondary" href="/institutions/new">Add an institution</a>
+          <% } %>
+        </div>
+      </section>
+
+      <ul class="card-grid">
+        <li class="card">
+          <h3>Public and private</h3>
+          <p>Health centers, hospitals, pharmacies, clinics and laboratories from both sectors, listed side by side.</p>
+        </li>
+        <li class="card">
+          <h3>Staff linked to institutions</h3>
+          <p>Every institution shows the medical and non-medical staff who work there.</p>
+        </li>
+        <li class="card">
+          <h3>Your own collection</h3>
+          <p>Add institutions, manage your entries and keep a list of your favorites on your profile.</p>
+        </li>
+      </ul>
     </main>
+    <%- include("./partials/_footer.ejs") %>
   </body>
 </html>

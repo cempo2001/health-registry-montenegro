@@ -12,7 +12,7 @@
     <main>
       <h1>Add institution</h1>
 
-      <form action="/institutions" method="POST">
+      <form class="form-card" action="/institutions" method="POST">
         <label for="name">Name:</label>
         <input type="text" name="name" id="name" required />
 
@@ -49,5 +49,6 @@
 
       <a href="/institutions">Back to institutions</a>
     </main>
+    <%- include("../partials/_footer.ejs") %>
   </body>
 </html>

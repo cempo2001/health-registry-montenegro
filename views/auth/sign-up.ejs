@@ -11,7 +11,7 @@
     <%- include("../partials/_navbar.ejs") %>
     <main>
       <h1>Sign up</h1>
-      <form action="/auth/sign-up" method="POST">
+      <form class="form-card" action="/auth/sign-up" method="POST">
         <label for="username">Username:</label>
         <input type="text" name="username" id="username" required />
 
@@ -24,5 +24,6 @@
         <button type="submit">Sign up</button>
       </form>
     </main>
+    <%- include("../partials/_footer.ejs") %>
   </body>
 </html>

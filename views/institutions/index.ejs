@@ -10,26 +10,34 @@
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>Healthcare institutions</h1>
-
-      <% if (user) { %>
-        <a href="/institutions/new">Add institution</a>
-      <% } %>
+      <div class="page-header">
+        <div>
+          <h1>Healthcare institutions</h1>
+          <p class="meta">Public and private institutions in one registry.</p>
+        </div>
+        <% if (user) { %>
+          <a class="btn" href="/institutions/new">Add institution</a>
+        <% } %>
+      </div>
 
       <% if (institutions.length === 0) { %>
         <p>No institutions have been added yet.</p>
       <% } else { %>
-        <ul>
+        <ul class="card-grid">
           <% institutions.forEach((institution) => { %>
-            <li>
-              <a href="/institutions/<%= institution._id %>"><%= institution.name %></a>
-              (<%= institution.sector %>, <%= institution.type %>, <%= institution.city %>)
-              <br />
-              Added by: <%= institution.owner.username %>
+            <li class="card">
+              <h3><a href="/institutions/<%= institution._id %>"><%= institution.name %></a></h3>
+              <p class="badges">
+                <span class="badge <%= institution.sector === "Public" ? "badge-public" : "badge-private" %>"><%= institution.sector %></span>
+                <span class="badge badge-type"><%= institution.type %></span>
+              </p>
+              <p class="meta"><%= institution.city %></p>
+              <p class="meta">Added by <%= institution.owner.username %></p>
             </li>
           <% }) %>
         </ul>
       <% } %>
     </main>
+    <%- include("../partials/_footer.ejs") %>
   </body>
 </html>

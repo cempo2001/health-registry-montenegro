@@ -10,73 +10,101 @@
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1><%= institution.name %></h1>
+      <a class="back-link" href="/institutions">Back to institutions</a>
 
-      <h2>Details</h2>
-      <p>Sector: <%= institution.sector %></p>
-      <p>Type: <%= institution.type %></p>
-      <p>City: <%= institution.city %></p>
-      <% if (institution.address) { %>
-        <p>Address: <%= institution.address %></p>
-      <% } %>
-      <% if (institution.phone) { %>
-        <p>Phone: <%= institution.phone %></p>
-      <% } %>
-      <% if (institution.email) { %>
-        <p>Email: <%= institution.email %></p>
-      <% } %>
+      <div class="page-header">
+        <div>
+          <h1><%= institution.name %></h1>
+          <p class="badges">
+            <span class="badge <%= institution.sector === "Public" ? "badge-public" : "badge-private" %>"><%= institution.sector %></span>
+            <span class="badge badge-type"><%= institution.type %></span>
+            <span class="meta"><%= institution.city %></span>
+          </p>
+        </div>
+        <div class="actions">
+          <% if (user) { %>
+            <% if (institution.favoritedByUsers.some((id) => id.equals(user._id))) { %>
+              <form action="/institutions/<%= institution._id %>/favorite?_method=DELETE" method="POST">
+                <button type="submit">Remove from favorites</button>
+              </form>
+            <% } else { %>
+              <form action="/institutions/<%= institution._id %>/favorite" method="POST">
+                <button type="submit">Add to favorites</button>
+              </form>
+            <% } %>
+          <% } %>
+          <!-- Only the owner sees these buttons; the server also checks on every route -->
+          <% if (user && institution.owner._id.equals(user._id)) { %>
+            <a class="btn btn-secondary" href="/institutions/<%= institution._id %>/edit">Edit institution</a>
+            <form action="/institutions/<%= institution._id %>?_method=DELETE" method="POST">
+              <button type="submit">Delete institution</button>
+            </form>
+          <% } %>
+        </div>
+      </div>
 
-      <h2>Favorites</h2>
-      <p>Number of users who favorited this institution: <%= institution.favoritedByUsers.length %></p>
-      <% if (user) { %>
-        <% if (institution.favoritedByUsers.some((id) => id.equals(user._id))) { %>
-          <form action="/institutions/<%= institution._id %>/favorite?_method=DELETE" method="POST">
-            <button type="submit">Remove from favorites</button>
-          </form>
+      <section class="card">
+        <h2>Details</h2>
+        <dl class="details">
+          <dt>Sector</dt>
+          <dd><%= institution.sector %></dd>
+          <dt>Type</dt>
+          <dd><%= institution.type %></dd>
+          <dt>City</dt>
+          <dd><%= institution.city %></dd>
+          <% if (institution.address) { %>
+            <dt>Address</dt>
+            <dd><%= institution.address %></dd>
+          <% } %>
+          <% if (institution.phone) { %>
+            <dt>Phone</dt>
+            <dd><%= institution.phone %></dd>
+          <% } %>
+          <% if (institution.email) { %>
+            <dt>Email</dt>
+            <dd><%= institution.email %></dd>
+          <% } %>
+        </dl>
+      </section>
+
+      <section class="card">
+        <div class="page-header">
+          <h2>Healthcare professionals</h2>
+          <% if (user && institution.owner._id.equals(user._id)) { %>
+            <a class="btn btn-secondary" href="/institutions/<%= institution._id %>/professionals/new">Add professional</a>
+          <% } %>
+        </div>
+        <% if (professionals.length === 0) { %>
+          <p>No professionals have been added to this institution yet.</p>
         <% } else { %>
-          <form action="/institutions/<%= institution._id %>/favorite" method="POST">
-            <button type="submit">Add to favorites</button>
-          </form>
+          <ul class="staff-list">
+            <% professionals.forEach((professional) => { %>
+              <li>
+                <div>
+                  <strong><%= professional.name %></strong>
+                  <span class="meta">
+                    <%= professional.profession %><% if (professional.specialty) { %>, <%= professional.specialty %><% } %>
+                  </span>
+                </div>
+                <% if (user && institution.owner._id.equals(user._id)) { %>
+                  <div class="actions">
+                    <a class="btn btn-secondary" href="/institutions/<%= institution._id %>/professionals/<%= professional._id %>/edit">Edit</a>
+                    <form action="/institutions/<%= institution._id %>/professionals/<%= professional._id %>?_method=DELETE" method="POST">
+                      <button type="submit">Delete</button>
+                    </form>
+                  </div>
+                <% } %>
+              </li>
+            <% }) %>
+          </ul>
         <% } %>
-      <% } %>
+      </section>
 
-      <h2>Healthcare professionals</h2>
-      <% if (professionals.length === 0) { %>
-        <p>No professionals have been added to this institution yet.</p>
-      <% } else { %>
-        <ul>
-          <% professionals.forEach((professional) => { %>
-            <li>
-              <%= professional.name %> - <%= professional.profession %>
-              <% if (professional.specialty) { %>
-                (<%= professional.specialty %>)
-              <% } %>
-              <% if (user && institution.owner._id.equals(user._id)) { %>
-                <a href="/institutions/<%= institution._id %>/professionals/<%= professional._id %>/edit">Edit</a>
-                <form action="/institutions/<%= institution._id %>/professionals/<%= professional._id %>?_method=DELETE" method="POST">
-                  <button type="submit">Delete</button>
-                </form>
-              <% } %>
-            </li>
-          <% }) %>
-        </ul>
-      <% } %>
-
-      <h2>Added to the registry by</h2>
-      <p><%= institution.owner.username %></p>
-
-      <!-- Only the owner sees these buttons; the server also checks on every route -->
-      <% if (user && institution.owner._id.equals(user._id)) { %>
-        <a href="/institutions/<%= institution._id %>/edit">Edit institution</a>
-
-        <a href="/institutions/<%= institution._id %>/professionals/new">Add professional</a>
-
-        <form action="/institutions/<%= institution._id %>?_method=DELETE" method="POST">
-          <button type="submit">Delete institution</button>
-        </form>
-      <% } %>
-
-      <a href="/institutions">Back to institutions</a>
+      <p class="meta">
+        Added to the registry by <%= institution.owner.username %>.
+        Favorited by <%= institution.favoritedByUsers.length %> <%= institution.favoritedByUsers.length === 1 ? "user" : "users" %>.
+      </p>
     </main>
+    <%- include("../partials/_footer.ejs") %>
   </body>
 </html>

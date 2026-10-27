@@ -13,7 +13,7 @@
       <h1>Add healthcare professional</h1>
       <p>Institution: <%= institution.name %></p>
 
-      <form action="/institutions/<%= institution._id %>/professionals" method="POST">
+      <form class="form-card" action="/institutions/<%= institution._id %>/professionals" method="POST">
         <label for="name">Full name:</label>
         <input type="text" name="name" id="name" required />
 
@@ -34,5 +34,6 @@
 
       <a href="/institutions/<%= institution._id %>">Back to institution</a>
     </main>
+    <%- include("../partials/_footer.ejs") %>
   </body>
 </html>

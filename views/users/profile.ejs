@@ -10,17 +10,18 @@
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>My profile: <%= user.username %></h1>
+      <h1>My profile</h1>
+      <p class="meta">Signed in as <%= user.username %></p>
 
       <h2>Favorite institutions</h2>
       <% if (favorites.length === 0) { %>
         <p>You have no favorite institutions yet.</p>
       <% } else { %>
-        <ul>
+        <ul class="card-grid">
           <% favorites.forEach((institution) => { %>
-            <li>
-              <a href="/institutions/<%= institution._id %>"><%= institution.name %></a>
-              (<%= institution.city %>)
+            <li class="card">
+              <h3><a href="/institutions/<%= institution._id %>"><%= institution.name %></a></h3>
+              <p class="meta"><%= institution.type %>, <%= institution.city %></p>
             </li>
           <% }) %>
         </ul>
@@ -30,15 +31,16 @@
       <% if (myInstitutions.length === 0) { %>
         <p>You have not added any institutions yet.</p>
       <% } else { %>
-        <ul>
+        <ul class="card-grid">
           <% myInstitutions.forEach((institution) => { %>
-            <li>
-              <a href="/institutions/<%= institution._id %>"><%= institution.name %></a>
-              (<%= institution.city %>)
+            <li class="card">
+              <h3><a href="/institutions/<%= institution._id %>"><%= institution.name %></a></h3>
+              <p class="meta"><%= institution.type %>, <%= institution.city %></p>
             </li>
           <% }) %>
         </ul>
       <% } %>
     </main>
+    <%- include("../partials/_footer.ejs") %>
   </body>
 </html>
