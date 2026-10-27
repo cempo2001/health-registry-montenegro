@@ -62,4 +62,32 @@ router.get("/:institutionId", async (req, res) => {
   }
 });
 
+// GET /institutions/:institutionId/edit
+router.get("/:institutionId/edit", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    // Zaštita na serveru: samo vlasnik smije otvoriti formu za izmjenu
+    if (!institution.owner.equals(req.session.user._id)) {
+      return res.status(403).render("error.ejs", {
+        msg: "Nemate dozvolu da izmijenite ovu ustanovu.",
+      });
+    }
+
+    res.render("institutions/edit.ejs", {
+      institution: institution,
+    });
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Formu za izmjenu trenutno nije moguće prikazati.",
+    });
+  }
+});
+
 module.exports = router;
