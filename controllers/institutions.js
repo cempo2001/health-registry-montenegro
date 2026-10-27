@@ -90,4 +90,33 @@ router.get("/:institutionId/edit", isSignedIn, async (req, res) => {
   }
 });
 
+// PUT /institutions/:institutionId
+router.put("/:institutionId", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    if (!institution.owner.equals(req.session.user._id)) {
+      return res.status(403).render("error.ejs", {
+        msg: "Nemate dozvolu da izmijenite ovu ustanovu.",
+      });
+    }
+
+    // Vlasnik se ne može mijenjati kroz formu, ni ručno poslanim zahtjevom
+    delete req.body.owner;
+
+    await institution.updateOne(req.body);
+    res.redirect(`/institutions/${req.params.institutionId}`);
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Izmjena nije sačuvana. Provjerite unesene podatke.",
+    });
+  }
+});
+
 module.exports = router;
