@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Institution = require("../models/institution.js");
+const Professional = require("../models/professional.js"); // NOVO
 const isSignedIn = require("../middleware/is-signed-in.js");
 
 // GET /institutions
@@ -52,8 +53,14 @@ router.get("/:institutionId", async (req, res) => {
       });
     }
 
+    // NOVO: radnici koji rade u ovoj ustanovi
+    const professionals = await Professional.find({
+      institution: institution._id,
+    });
+
     res.render("institutions/show.ejs", {
       institution: institution,
+      professionals: professionals,
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
@@ -141,6 +148,62 @@ router.delete("/:institutionId", isSignedIn, async (req, res) => {
   } catch (error) {
     res.status(500).render("error.ejs", {
       msg: "Ustanova nije obrisana. Pokušajte ponovo.",
+    });
+  }
+});
+
+// NOVO: GET /institutions/:institutionId/professionals/new
+router.get("/:institutionId/professionals/new", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    if (!institution.owner.equals(req.session.user._id)) {
+      return res.status(403).render("error.ejs", {
+        msg: "Nemate dozvolu da dodajete radnike u ovu ustanovu.",
+      });
+    }
+
+    res.render("professionals/new.ejs", {
+      institution: institution,
+    });
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Formu trenutno nije moguće prikazati.",
+    });
+  }
+});
+
+// NOVO: POST /institutions/:institutionId/professionals
+router.post("/:institutionId/professionals", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    if (!institution.owner.equals(req.session.user._id)) {
+      return res.status(403).render("error.ejs", {
+        msg: "Nemate dozvolu da dodajete radnike u ovu ustanovu.",
+      });
+    }
+
+    // Ustanova i vlasnik se uzimaju sa servera, nikad iz forme
+    req.body.institution = institution._id;
+    req.body.owner = req.session.user._id;
+    await Professional.create(req.body);
+    res.redirect(`/institutions/${institution._id}`);
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Radnik nije sačuvan. Provjerite unesene podatke.",
     });
   }
 });

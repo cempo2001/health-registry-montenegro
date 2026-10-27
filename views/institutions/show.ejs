@@ -25,12 +25,30 @@
       <p>Email: <%= institution.email %></p>
     <% } %>
 
+    <h2>Zdravstveni radnici</h2>
+    <% if (professionals.length === 0) { %>
+      <p>Za ovu ustanovu još nema unesenih radnika.</p>
+    <% } else { %>
+      <ul>
+        <% professionals.forEach((professional) => { %>
+          <li>
+            <%= professional.name %> - <%= professional.profession %>
+            <% if (professional.specialty) { %>
+              (<%= professional.specialty %>)
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+
     <h2>Unio/la u registar</h2>
     <p><%= institution.owner.username %></p>
 
     <!-- Dugmad vidi samo vlasnik; server to provjerava i na svakoj ruti -->
     <% if (user && institution.owner._id.equals(user._id)) { %>
       <a href="/institutions/<%= institution._id %>/edit">Izmijeni ustanovu</a>
+
+      <a href="/institutions/<%= institution._id %>/professionals/new">Dodaj radnika</a>
 
       <form action="/institutions/<%= institution._id %>?_method=DELETE" method="POST">
         <button type="submit">Obriši ustanovu</button>
