@@ -4,48 +4,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Nova ustanova</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
+    <main>
+      <h1>Dodaj ustanovu</h1>
 
-    <h1>Dodaj ustanovu</h1>
+      <form action="/institutions" method="POST">
+        <label for="name">Naziv:</label>
+        <input type="text" name="name" id="name" required />
 
-    <form action="/institutions" method="POST">
-      <label for="name">Naziv:</label>
-      <input type="text" name="name" id="name" required />
+        <label for="sector">Sektor:</label>
+        <select name="sector" id="sector" required>
+          <option value="Javna">Javna</option>
+          <option value="Privatna">Privatna</option>
+        </select>
 
-      <label for="sector">Sektor:</label>
-      <select name="sector" id="sector" required>
-        <option value="Javna">Javna</option>
-        <option value="Privatna">Privatna</option>
-      </select>
+        <label for="type">Vrsta ustanove:</label>
+        <select name="type" id="type" required>
+          <option value="Dom zdravlja">Dom zdravlja</option>
+          <option value="Bolnica">Bolnica</option>
+          <option value="Apoteka">Apoteka</option>
+          <option value="Ordinacija">Ordinacija</option>
+          <option value="Laboratorija">Laboratorija</option>
+          <option value="Stomatološka ordinacija">Stomatološka ordinacija</option>
+        </select>
 
-      <label for="type">Vrsta ustanove:</label>
-      <select name="type" id="type" required>
-        <option value="Dom zdravlja">Dom zdravlja</option>
-        <option value="Bolnica">Bolnica</option>
-        <option value="Apoteka">Apoteka</option>
-        <option value="Ordinacija">Ordinacija</option>
-        <option value="Laboratorija">Laboratorija</option>
-        <option value="Stomatološka ordinacija">Stomatološka ordinacija</option>
-      </select>
+        <label for="city">Grad:</label>
+        <input type="text" name="city" id="city" required />
 
-      <label for="city">Grad:</label>
-      <input type="text" name="city" id="city" required />
+        <label for="address">Adresa:</label>
+        <input type="text" name="address" id="address" />
 
-      <label for="address">Adresa:</label>
-      <input type="text" name="address" id="address" />
+        <label for="phone">Telefon:</label>
+        <input type="text" name="phone" id="phone" />
 
-      <label for="phone">Telefon:</label>
-      <input type="text" name="phone" id="phone" />
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" />
 
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email" />
+        <button type="submit">Sačuvaj ustanovu</button>
+      </form>
 
-      <button type="submit">Sačuvaj ustanovu</button>
-    </form>
-
-    <a href="/institutions">Nazad na ustanove</a>
+      <a href="/institutions">Nazad na ustanove</a>
+    </main>
   </body>
 </html>

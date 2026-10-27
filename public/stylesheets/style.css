@@ -1,0 +1,160 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
+
+/* Paleta (svi parovi boja imaju kontrast najmanje 4.5:1) */
+:root {
+  --bg: #f4f8f7;
+  --card: #ffffff;
+  --text: #1b2b34;
+  --muted: #4a5b63;
+  --primary: #0b6e6e;
+  --primary-dark: #0b4f4f;
+  --danger: #b3261e;
+  --border: #c9d8d6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+/* Navigacija */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background-color: var(--primary-dark);
+}
+
+.navbar a,
+.navbar span {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.navbar a:hover,
+.navbar a:focus {
+  text-decoration: underline;
+}
+
+.brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+/* Glavni sadržaj */
+main {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1 {
+  margin-top: 0;
+  color: var(--primary-dark);
+}
+
+h2 {
+  margin-top: 2rem;
+  color: var(--primary-dark);
+}
+
+main a {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Liste prikazane kao kartice (CSS Grid) */
+main ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+main li {
+  padding: 1rem;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* Forme */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 480px;
+}
+
+label {
+  font-weight: 500;
+}
+
+input,
+select {
+  padding: 0.6rem;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background-color: var(--card);
+  border: 1px solid var(--muted);
+  border-radius: 6px;
+}
+
+input:focus,
+select:focus,
+button:focus,
+a:focus {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Dugmad */
+button {
+  align-self: flex-start;
+  padding: 0.6rem 1.2rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: var(--primary);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Dugmad za brisanje (forme koje šalju DELETE) */
+form[action*="_method=DELETE"] button {
+  background-color: var(--danger);
+}
+
+form[action*="_method=DELETE"] button:hover {
+  background-color: #8c1d18;
+}

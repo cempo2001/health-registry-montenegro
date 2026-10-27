@@ -4,48 +4,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Izmjena: <%= institution.name %></title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
+    <main>
+      <h1>Izmijeni ustanovu</h1>
 
-    <h1>Izmijeni ustanovu</h1>
+      <form action="/institutions/<%= institution._id %>?_method=PUT" method="POST">
+        <label for="name">Naziv:</label>
+        <input type="text" name="name" id="name" value="<%= institution.name %>" required />
 
-    <form action="/institutions/<%= institution._id %>?_method=PUT" method="POST">
-      <label for="name">Naziv:</label>
-      <input type="text" name="name" id="name" value="<%= institution.name %>" required />
+        <label for="sector">Sektor:</label>
+        <select name="sector" id="sector" required>
+          <option value="Javna" <%= institution.sector === "Javna" ? "selected" : "" %>>Javna</option>
+          <option value="Privatna" <%= institution.sector === "Privatna" ? "selected" : "" %>>Privatna</option>
+        </select>
 
-      <label for="sector">Sektor:</label>
-      <select name="sector" id="sector" required>
-        <option value="Javna" <%= institution.sector === "Javna" ? "selected" : "" %>>Javna</option>
-        <option value="Privatna" <%= institution.sector === "Privatna" ? "selected" : "" %>>Privatna</option>
-      </select>
+        <label for="type">Vrsta ustanove:</label>
+        <select name="type" id="type" required>
+          <option value="Dom zdravlja" <%= institution.type === "Dom zdravlja" ? "selected" : "" %>>Dom zdravlja</option>
+          <option value="Bolnica" <%= institution.type === "Bolnica" ? "selected" : "" %>>Bolnica</option>
+          <option value="Apoteka" <%= institution.type === "Apoteka" ? "selected" : "" %>>Apoteka</option>
+          <option value="Ordinacija" <%= institution.type === "Ordinacija" ? "selected" : "" %>>Ordinacija</option>
+          <option value="Laboratorija" <%= institution.type === "Laboratorija" ? "selected" : "" %>>Laboratorija</option>
+          <option value="Stomatološka ordinacija" <%= institution.type === "Stomatološka ordinacija" ? "selected" : "" %>>Stomatološka ordinacija</option>
+        </select>
 
-      <label for="type">Vrsta ustanove:</label>
-      <select name="type" id="type" required>
-        <option value="Dom zdravlja" <%= institution.type === "Dom zdravlja" ? "selected" : "" %>>Dom zdravlja</option>
-        <option value="Bolnica" <%= institution.type === "Bolnica" ? "selected" : "" %>>Bolnica</option>
-        <option value="Apoteka" <%= institution.type === "Apoteka" ? "selected" : "" %>>Apoteka</option>
-        <option value="Ordinacija" <%= institution.type === "Ordinacija" ? "selected" : "" %>>Ordinacija</option>
-        <option value="Laboratorija" <%= institution.type === "Laboratorija" ? "selected" : "" %>>Laboratorija</option>
-        <option value="Stomatološka ordinacija" <%= institution.type === "Stomatološka ordinacija" ? "selected" : "" %>>Stomatološka ordinacija</option>
-      </select>
+        <label for="city">Grad:</label>
+        <input type="text" name="city" id="city" value="<%= institution.city %>" required />
 
-      <label for="city">Grad:</label>
-      <input type="text" name="city" id="city" value="<%= institution.city %>" required />
+        <label for="address">Adresa:</label>
+        <input type="text" name="address" id="address" value="<%= institution.address || '' %>" />
 
-      <label for="address">Adresa:</label>
-      <input type="text" name="address" id="address" value="<%= institution.address || '' %>" />
+        <label for="phone">Telefon:</label>
+        <input type="text" name="phone" id="phone" value="<%= institution.phone || '' %>" />
 
-      <label for="phone">Telefon:</label>
-      <input type="text" name="phone" id="phone" value="<%= institution.phone || '' %>" />
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" value="<%= institution.email || '' %>" />
 
-      <label for="email">Email:</label>
-      <input type="email" name="email" id="email" value="<%= institution.email || '' %>" />
+        <button type="submit">Sačuvaj izmjene</button>
+      </form>
 
-      <button type="submit">Sačuvaj izmjene</button>
-    </form>
-
-    <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+      <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+    </main>
   </body>
 </html>

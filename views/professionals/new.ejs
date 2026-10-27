@@ -4,33 +4,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Novi zdravstveni radnik</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
+    <main>
+      <h1>Dodaj zdravstvenog radnika</h1>
+      <p>Ustanova: <%= institution.name %></p>
 
-    <h1>Dodaj zdravstvenog radnika</h1>
-    <p>Ustanova: <%= institution.name %></p>
+      <form action="/institutions/<%= institution._id %>/professionals" method="POST">
+        <label for="name">Ime i prezime:</label>
+        <input type="text" name="name" id="name" required />
 
-    <form action="/institutions/<%= institution._id %>/professionals" method="POST">
-      <label for="name">Ime i prezime:</label>
-      <input type="text" name="name" id="name" required />
+        <label for="profession">Zanimanje:</label>
+        <select name="profession" id="profession" required>
+          <option value="Doktor medicine">Doktor medicine</option>
+          <option value="Medicinska sestra / tehničar">Medicinska sestra / tehničar</option>
+          <option value="Farmaceut">Farmaceut</option>
+          <option value="Doktor stomatologije">Doktor stomatologije</option>
+          <option value="Laboratorijski tehničar">Laboratorijski tehničar</option>
+        </select>
 
-      <label for="profession">Zanimanje:</label>
-      <select name="profession" id="profession" required>
-        <option value="Doktor medicine">Doktor medicine</option>
-        <option value="Medicinska sestra / tehničar">Medicinska sestra / tehničar</option>
-        <option value="Farmaceut">Farmaceut</option>
-        <option value="Doktor stomatologije">Doktor stomatologije</option>
-        <option value="Laboratorijski tehničar">Laboratorijski tehničar</option>
-      </select>
+        <label for="specialty">Specijalnost:</label>
+        <input type="text" name="specialty" id="specialty" />
 
-      <label for="specialty">Specijalnost:</label>
-      <input type="text" name="specialty" id="specialty" />
+        <button type="submit">Sačuvaj radnika</button>
+      </form>
 
-      <button type="submit">Sačuvaj radnika</button>
-    </form>
-
-    <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+      <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+    </main>
   </body>
 </html>

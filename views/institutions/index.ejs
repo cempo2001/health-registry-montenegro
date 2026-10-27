@@ -4,30 +4,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Sve ustanove</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
+    <main>
+      <h1>Zdravstvene ustanove</h1>
 
-    <h1>Zdravstvene ustanove</h1>
+      <% if (user) { %>
+        <a href="/institutions/new">Dodaj ustanovu</a>
+      <% } %>
 
-    <% if (user) { %>
-      <a href="/institutions/new">Dodaj ustanovu</a>
-    <% } %>
-
-    <% if (institutions.length === 0) { %>
-      <p>Još nema unesenih ustanova.</p>
-    <% } else { %>
-      <ul>
-        <% institutions.forEach((institution) => { %>
-          <li>
-            <a href="/institutions/<%= institution._id %>"><%= institution.name %></a>
-            (<%= institution.sector %>, <%= institution.type %>, <%= institution.city %>)
-            <br />
-            Dodao/la: <%= institution.owner.username %>
-          </li>
-        <% }) %>
-      </ul>
-    <% } %>
+      <% if (institutions.length === 0) { %>
+        <p>Još nema unesenih ustanova.</p>
+      <% } else { %>
+        <ul>
+          <% institutions.forEach((institution) => { %>
+            <li>
+              <a href="/institutions/<%= institution._id %>"><%= institution.name %></a>
+              (<%= institution.sector %>, <%= institution.type %>, <%= institution.city %>)
+              <br />
+              Dodao/la: <%= institution.owner.username %>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </main>
   </body>
 </html>

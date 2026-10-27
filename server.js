@@ -4,6 +4,7 @@ dns.setServers(["8.8.8.8", "1.1.1.1"]); // rješava SRV problem u tvojoj mreži 
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
+const path = require("path"); // NOVO
 const app = express();
 const mongoose = require("mongoose");
 const methodOverride = require("method-override");
@@ -29,6 +30,7 @@ mongoose.connection.on("connected", () => {
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));
+app.use(express.static(path.join(__dirname, "public"))); // NOVO
 app.use(
   session({
     secret: process.env.SESSION_SECRET,

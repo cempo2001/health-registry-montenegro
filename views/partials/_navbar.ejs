@@ -1,14 +1,16 @@
 <!-- views/partials/_navbar.ejs -->
-<nav>
-  <a href="/">Početna</a>
-  <a href="/institutions">Ustanove</a>
-  <% if (user) { %>
-    <a href="/institutions/new">Dodaj ustanovu</a>
-    <a href="/users/profile">Moj profil</a>
-    <span>Prijavljen: <%= user.username %></span>
-    <a href="/auth/sign-out">Odjava</a>
-  <% } else { %>
-    <a href="/auth/sign-in">Prijava</a>
-    <a href="/auth/sign-up">Registracija</a>
-  <% } %>
+<nav class="navbar">
+  <a class="brand" href="/">Registar zdravstva</a>
+  <div class="nav-links">
+    <a href="/institutions">Ustanove</a>
+    <% if (user) { %>
+      <a href="/institutions/new">Dodaj ustanovu</a>
+      <a href="/users/profile">Moj profil</a>
+      <span>Prijavljen: <%= user.username %></span>
+      <a href="/auth/sign-out">Odjava</a>
+    <% } else { %>
+      <a href="/auth/sign-in">Prijava</a>
+      <a href="/auth/sign-up">Registracija</a>
+    <% } %>
+  </div>
 </nav>
