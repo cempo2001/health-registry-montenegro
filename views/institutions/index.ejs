@@ -25,14 +25,25 @@
       <% } else { %>
         <ul class="card-grid">
           <% institutions.forEach((institution) => { %>
-            <li class="card">
-              <h3><a href="/institutions/<%= institution._id %>"><%= institution.name %></a></h3>
-              <p class="badges">
-                <span class="badge <%= institution.sector === "Public" ? "badge-public" : "badge-private" %>"><%= institution.sector %></span>
-                <span class="badge badge-type"><%= institution.type %></span>
-              </p>
-              <p class="meta"><%= institution.city %></p>
-              <p class="meta">Added by <%= institution.owner.username %></p>
+            <li class="card institution-card <%= institution.sector === "Public" ? "institution-card-public" : "institution-card-private" %>">
+              <div class="card-body">
+                <p class="badges">
+                  <span class="badge <%= institution.sector === "Public" ? "badge-public" : "badge-private" %>"><%= institution.sector %></span>
+                  <span class="badge badge-type"><%= institution.type %></span>
+                </p>
+                <h3><a href="/institutions/<%= institution._id %>"><%= institution.name %></a></h3>
+                <p class="meta">
+                  <%= institution.city %><% if (institution.address) { %>, <%= institution.address %><% } %>
+                </p>
+                <% if (institution.phone) { %>
+                  <p class="meta">Phone: <%= institution.phone %></p>
+                <% } %>
+              </div>
+              <div class="card-footer">
+                <span class="avatar" aria-hidden="true"><%= institution.owner.username.charAt(0).toUpperCase() %></span>
+                <span class="meta">Added by <strong><%= institution.owner.username %></strong></span>
+                <a class="card-link" href="/institutions/<%= institution._id %>">View details</a>
+              </div>
             </li>
           <% }) %>
         </ul>
