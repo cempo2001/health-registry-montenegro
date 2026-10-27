@@ -1,0 +1,33 @@
+<!-- views/institutions/show.ejs -->
+<!DOCTYPE html>
+<html lang="sr-Latn-ME">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= institution.name %></title>
+  </head>
+  <body>
+    <%- include("../partials/_navbar.ejs") %>
+
+    <h1><%= institution.name %></h1>
+
+    <h2>Podaci</h2>
+    <p>Sektor: <%= institution.sector %></p>
+    <p>Vrsta: <%= institution.type %></p>
+    <p>Grad: <%= institution.city %></p>
+    <% if (institution.address) { %>
+      <p>Adresa: <%= institution.address %></p>
+    <% } %>
+    <% if (institution.phone) { %>
+      <p>Telefon: <%= institution.phone %></p>
+    <% } %>
+    <% if (institution.email) { %>
+      <p>Email: <%= institution.email %></p>
+    <% } %>
+
+    <h2>Unio/la u registar</h2>
+    <p><%= institution.owner.username %></p>
+
+    <a href="/institutions">Nazad na ustanove</a>
+  </body>
+</html>
