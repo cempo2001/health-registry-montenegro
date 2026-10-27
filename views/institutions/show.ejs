@@ -36,6 +36,12 @@
             <% if (professional.specialty) { %>
               (<%= professional.specialty %>)
             <% } %>
+            <% if (user && institution.owner._id.equals(user._id)) { %>
+              <a href="/institutions/<%= institution._id %>/professionals/<%= professional._id %>/edit">Izmijeni</a>
+              <form action="/institutions/<%= institution._id %>/professionals/<%= professional._id %>?_method=DELETE" method="POST">
+                <button type="submit">Obriši</button>
+              </form>
+            <% } %>
           </li>
         <% }) %>
       </ul>

@@ -208,4 +208,124 @@ router.post("/:institutionId/professionals", isSignedIn, async (req, res) => {
   }
 });
 
+// NOVO: GET /institutions/:institutionId/professionals/:professionalId/edit
+router.get(
+  "/:institutionId/professionals/:professionalId/edit",
+  isSignedIn,
+  async (req, res) => {
+    try {
+      const institution = await Institution.findById(req.params.institutionId);
+      const professional = await Professional.findById(
+        req.params.professionalId
+      );
+
+      // Radnik mora postojati i pripadati ustanovi iz adrese
+      if (
+        !institution ||
+        !professional ||
+        !professional.institution.equals(institution._id)
+      ) {
+        return res.status(404).render("error.ejs", {
+          msg: "Radnik nije pronađen.",
+        });
+      }
+
+      if (!institution.owner.equals(req.session.user._id)) {
+        return res.status(403).render("error.ejs", {
+          msg: "Nemate dozvolu da izmijenite ovog radnika.",
+        });
+      }
+
+      res.render("professionals/edit.ejs", {
+        institution: institution,
+        professional: professional,
+      });
+    } catch (error) {
+      res.status(500).render("error.ejs", {
+        msg: "Formu trenutno nije moguće prikazati.",
+      });
+    }
+  }
+);
+
+// NOVO: PUT /institutions/:institutionId/professionals/:professionalId
+router.put(
+  "/:institutionId/professionals/:professionalId",
+  isSignedIn,
+  async (req, res) => {
+    try {
+      const institution = await Institution.findById(req.params.institutionId);
+      const professional = await Professional.findById(
+        req.params.professionalId
+      );
+
+      // Radnik mora postojati i pripadati ustanovi iz adrese
+      if (
+        !institution ||
+        !professional ||
+        !professional.institution.equals(institution._id)
+      ) {
+        return res.status(404).render("error.ejs", {
+          msg: "Radnik nije pronađen.",
+        });
+      }
+
+      if (!institution.owner.equals(req.session.user._id)) {
+        return res.status(403).render("error.ejs", {
+          msg: "Nemate dozvolu da izmijenite ovog radnika.",
+        });
+      }
+
+      // Ustanova i vlasnik se ne mogu mijenjati kroz formu
+      delete req.body.owner;
+      delete req.body.institution;
+
+      await professional.updateOne(req.body);
+      res.redirect(`/institutions/${institution._id}`);
+    } catch (error) {
+      res.status(500).render("error.ejs", {
+        msg: "Izmjena nije sačuvana. Provjerite unesene podatke.",
+      });
+    }
+  }
+);
+
+// NOVO: DELETE /institutions/:institutionId/professionals/:professionalId
+router.delete(
+  "/:institutionId/professionals/:professionalId",
+  isSignedIn,
+  async (req, res) => {
+    try {
+      const institution = await Institution.findById(req.params.institutionId);
+      const professional = await Professional.findById(
+        req.params.professionalId
+      );
+
+      // Radnik mora postojati i pripadati ustanovi iz adrese
+      if (
+        !institution ||
+        !professional ||
+        !professional.institution.equals(institution._id)
+      ) {
+        return res.status(404).render("error.ejs", {
+          msg: "Radnik nije pronađen.",
+        });
+      }
+
+      if (!institution.owner.equals(req.session.user._id)) {
+        return res.status(403).render("error.ejs", {
+          msg: "Nemate dozvolu da obrišete ovog radnika.",
+        });
+      }
+
+      await professional.deleteOne();
+      res.redirect(`/institutions/${institution._id}`);
+    } catch (error) {
+      res.status(500).render("error.ejs", {
+        msg: "Radnik nije obrisan. Pokušajte ponovo.",
+      });
+    }
+  }
+);
+
 module.exports = router;

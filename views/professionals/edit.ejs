@@ -1,0 +1,36 @@
+<!-- views/professionals/edit.ejs -->
+<!DOCTYPE html>
+<html lang="sr-Latn-ME">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Izmjena radnika</title>
+  </head>
+  <body>
+    <%- include("../partials/_navbar.ejs") %>
+
+    <h1>Izmijeni radnika</h1>
+    <p>Ustanova: <%= institution.name %></p>
+
+    <form action="/institutions/<%= institution._id %>/professionals/<%= professional._id %>?_method=PUT" method="POST">
+      <label for="name">Ime i prezime:</label>
+      <input type="text" name="name" id="name" value="<%= professional.name %>" required />
+
+      <label for="profession">Zanimanje:</label>
+      <select name="profession" id="profession" required>
+        <option value="Doktor medicine" <%= professional.profession === "Doktor medicine" ? "selected" : "" %>>Doktor medicine</option>
+        <option value="Medicinska sestra / tehničar" <%= professional.profession === "Medicinska sestra / tehničar" ? "selected" : "" %>>Medicinska sestra / tehničar</option>
+        <option value="Farmaceut" <%= professional.profession === "Farmaceut" ? "selected" : "" %>>Farmaceut</option>
+        <option value="Doktor stomatologije" <%= professional.profession === "Doktor stomatologije" ? "selected" : "" %>>Doktor stomatologije</option>
+        <option value="Laboratorijski tehničar" <%= professional.profession === "Laboratorijski tehničar" ? "selected" : "" %>>Laboratorijski tehničar</option>
+      </select>
+
+      <label for="specialty">Specijalnost:</label>
+      <input type="text" name="specialty" id="specialty" value="<%= professional.specialty %>" />
+
+      <button type="submit">Sačuvaj izmjene</button>
+    </form>
+
+    <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+  </body>
+</html>
