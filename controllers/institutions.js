@@ -119,4 +119,30 @@ router.put("/:institutionId", isSignedIn, async (req, res) => {
   }
 });
 
+// DELETE /institutions/:institutionId
+router.delete("/:institutionId", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    if (!institution.owner.equals(req.session.user._id)) {
+      return res.status(403).render("error.ejs", {
+        msg: "Nemate dozvolu da obrišete ovu ustanovu.",
+      });
+    }
+
+    await institution.deleteOne();
+    res.redirect("/institutions");
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Ustanova nije obrisana. Pokušajte ponovo.",
+    });
+  }
+});
+
 module.exports = router;
