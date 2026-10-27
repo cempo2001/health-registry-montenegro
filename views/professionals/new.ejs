@@ -1,38 +1,38 @@
 <!-- views/professionals/new.ejs -->
 <!DOCTYPE html>
-<html lang="sr-Latn-ME">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title>Novi zdravstveni radnik</title>
+    <title>New healthcare professional</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>Dodaj zdravstvenog radnika</h1>
-      <p>Ustanova: <%= institution.name %></p>
+      <h1>Add healthcare professional</h1>
+      <p>Institution: <%= institution.name %></p>
 
       <form action="/institutions/<%= institution._id %>/professionals" method="POST">
-        <label for="name">Ime i prezime:</label>
+        <label for="name">Full name:</label>
         <input type="text" name="name" id="name" required />
 
-        <label for="profession">Zanimanje:</label>
+        <label for="profession">Profession:</label>
         <select name="profession" id="profession" required>
-          <option value="Doktor medicine">Doktor medicine</option>
-          <option value="Medicinska sestra / tehničar">Medicinska sestra / tehničar</option>
-          <option value="Farmaceut">Farmaceut</option>
-          <option value="Doktor stomatologije">Doktor stomatologije</option>
-          <option value="Laboratorijski tehničar">Laboratorijski tehničar</option>
+          <option value="Physician">Physician</option>
+          <option value="Nurse / Technician">Nurse / Technician</option>
+          <option value="Pharmacist">Pharmacist</option>
+          <option value="Dentist">Dentist</option>
+          <option value="Laboratory technician">Laboratory technician</option>
         </select>
 
-        <label for="specialty">Specijalnost:</label>
+        <label for="specialty">Specialty:</label>
         <input type="text" name="specialty" id="specialty" />
 
-        <button type="submit">Sačuvaj radnika</button>
+        <button type="submit">Save professional</button>
       </form>
 
-      <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+      <a href="/institutions/<%= institution._id %>">Back to institution</a>
     </main>
   </body>
 </html>

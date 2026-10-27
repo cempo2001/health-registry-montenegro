@@ -1,6 +1,6 @@
 <!-- views/institutions/show.ejs -->
 <!DOCTYPE html>
-<html lang="sr-Latn-ME">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,37 +12,37 @@
     <main>
       <h1><%= institution.name %></h1>
 
-      <h2>Podaci</h2>
-      <p>Sektor: <%= institution.sector %></p>
-      <p>Vrsta: <%= institution.type %></p>
-      <p>Grad: <%= institution.city %></p>
+      <h2>Details</h2>
+      <p>Sector: <%= institution.sector %></p>
+      <p>Type: <%= institution.type %></p>
+      <p>City: <%= institution.city %></p>
       <% if (institution.address) { %>
-        <p>Adresa: <%= institution.address %></p>
+        <p>Address: <%= institution.address %></p>
       <% } %>
       <% if (institution.phone) { %>
-        <p>Telefon: <%= institution.phone %></p>
+        <p>Phone: <%= institution.phone %></p>
       <% } %>
       <% if (institution.email) { %>
         <p>Email: <%= institution.email %></p>
       <% } %>
 
-      <h2>Omiljene</h2>
-      <p>Broj korisnika kojima je ustanova omiljena: <%= institution.favoritedByUsers.length %></p>
+      <h2>Favorites</h2>
+      <p>Number of users who favorited this institution: <%= institution.favoritedByUsers.length %></p>
       <% if (user) { %>
         <% if (institution.favoritedByUsers.some((id) => id.equals(user._id))) { %>
           <form action="/institutions/<%= institution._id %>/favorite?_method=DELETE" method="POST">
-            <button type="submit">Ukloni iz omiljenih</button>
+            <button type="submit">Remove from favorites</button>
           </form>
         <% } else { %>
           <form action="/institutions/<%= institution._id %>/favorite" method="POST">
-            <button type="submit">Dodaj u omiljene</button>
+            <button type="submit">Add to favorites</button>
           </form>
         <% } %>
       <% } %>
 
-      <h2>Zdravstveni radnici</h2>
+      <h2>Healthcare professionals</h2>
       <% if (professionals.length === 0) { %>
-        <p>Za ovu ustanovu još nema unesenih radnika.</p>
+        <p>No professionals have been added to this institution yet.</p>
       <% } else { %>
         <ul>
           <% professionals.forEach((professional) => { %>
@@ -52,9 +52,9 @@
                 (<%= professional.specialty %>)
               <% } %>
               <% if (user && institution.owner._id.equals(user._id)) { %>
-                <a href="/institutions/<%= institution._id %>/professionals/<%= professional._id %>/edit">Izmijeni</a>
+                <a href="/institutions/<%= institution._id %>/professionals/<%= professional._id %>/edit">Edit</a>
                 <form action="/institutions/<%= institution._id %>/professionals/<%= professional._id %>?_method=DELETE" method="POST">
-                  <button type="submit">Obriši</button>
+                  <button type="submit">Delete</button>
                 </form>
               <% } %>
             </li>
@@ -62,21 +62,21 @@
         </ul>
       <% } %>
 
-      <h2>Unio/la u registar</h2>
+      <h2>Added to the registry by</h2>
       <p><%= institution.owner.username %></p>
 
-      <!-- Dugmad vidi samo vlasnik; server to provjerava i na svakoj ruti -->
+      <!-- Only the owner sees these buttons; the server also checks on every route -->
       <% if (user && institution.owner._id.equals(user._id)) { %>
-        <a href="/institutions/<%= institution._id %>/edit">Izmijeni ustanovu</a>
+        <a href="/institutions/<%= institution._id %>/edit">Edit institution</a>
 
-        <a href="/institutions/<%= institution._id %>/professionals/new">Dodaj radnika</a>
+        <a href="/institutions/<%= institution._id %>/professionals/new">Add professional</a>
 
         <form action="/institutions/<%= institution._id %>?_method=DELETE" method="POST">
-          <button type="submit">Obriši ustanovu</button>
+          <button type="submit">Delete institution</button>
         </form>
       <% } %>
 
-      <a href="/institutions">Nazad na ustanove</a>
+      <a href="/institutions">Back to institutions</a>
     </main>
   </body>
 </html>

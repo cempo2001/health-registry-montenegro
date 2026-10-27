@@ -26,20 +26,20 @@ router.post("/sign-up", async (req, res) => {
   try {
     const userInDatabase = await User.findOne({ username: req.body.username });
     if (userInDatabase) {
-      return res.send("Korisničko ime je već zauzeto.");
+      return res.send("Username is already taken.");
     }
 
     if (req.body.password !== req.body.confirmPassword) {
-      return res.send("Lozinka i potvrda lozinke se ne poklapaju.");
+      return res.send("Password and confirm password do not match.");
     }
 
-    // Lozinku heširamo prije upisa u bazu
+    // Hash the password before saving it to the database
     const hashedPassword = bcrypt.hashSync(req.body.password, 10);
     req.body.password = hashedPassword;
 
     const user = await User.create(req.body);
 
-    // Automatska prijava poslije registracije
+    // Sign the user in automatically after sign up
     req.session.user = {
       username: user.username,
       _id: user._id,
@@ -50,7 +50,7 @@ router.post("/sign-up", async (req, res) => {
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Registracija nije uspjela. Pokušajte ponovo.",
+      msg: "Sign up failed. Please try again.",
     });
   }
 });
@@ -60,7 +60,7 @@ router.post("/sign-in", async (req, res) => {
   try {
     const userInDatabase = await User.findOne({ username: req.body.username });
     if (!userInDatabase) {
-      return res.send("Prijava nije uspjela. Pokušajte ponovo.");
+      return res.send("Sign in failed. Please try again.");
     }
 
     const validPassword = bcrypt.compareSync(
@@ -68,10 +68,10 @@ router.post("/sign-in", async (req, res) => {
       userInDatabase.password
     );
     if (!validPassword) {
-      return res.send("Prijava nije uspjela. Pokušajte ponovo.");
+      return res.send("Sign in failed. Please try again.");
     }
 
-    // Lozinka se ne čuva u sesiji, ni heširana
+    // The password is never stored in the session, not even hashed
     req.session.user = {
       username: userInDatabase.username,
       _id: userInDatabase._id,
@@ -82,7 +82,7 @@ router.post("/sign-in", async (req, res) => {
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Prijava nije uspjela. Pokušajte ponovo.",
+      msg: "Sign in failed. Please try again.",
     });
   }
 });

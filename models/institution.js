@@ -26,12 +26,12 @@ const institutionSchema = new mongoose.Schema({
   email: {
     type: String,
   },
-  // Referenca na korisnika koji je unio ustanovu (jedan-prema-više)
+  // Reference to the user who created the institution (one-to-many)
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-  // NOVO: korisnici koji su ustanovu označili kao omiljenu (više-prema-više)
+  // Users who marked the institution as a favorite (many-to-many)
   favoritedByUsers: [
     {
       type: mongoose.Schema.Types.ObjectId,

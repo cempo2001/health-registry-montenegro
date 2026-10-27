@@ -1,20 +1,20 @@
 <!-- views/users/profile.ejs -->
 <!DOCTYPE html>
-<html lang="sr-Latn-ME">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title>Moj profil</title>
+    <title>My profile</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>Moj profil: <%= user.username %></h1>
+      <h1>My profile: <%= user.username %></h1>
 
-      <h2>Omiljene ustanove</h2>
+      <h2>Favorite institutions</h2>
       <% if (favorites.length === 0) { %>
-        <p>Još nemaš omiljenih ustanova.</p>
+        <p>You have no favorite institutions yet.</p>
       <% } else { %>
         <ul>
           <% favorites.forEach((institution) => { %>
@@ -26,9 +26,9 @@
         </ul>
       <% } %>
 
-      <h2>Ustanove koje sam unio/la</h2>
+      <h2>Institutions I added</h2>
       <% if (myInstitutions.length === 0) { %>
-        <p>Još nisi unio/la nijednu ustanovu.</p>
+        <p>You have not added any institutions yet.</p>
       <% } else { %>
         <ul>
           <% myInstitutions.forEach((institution) => { %>

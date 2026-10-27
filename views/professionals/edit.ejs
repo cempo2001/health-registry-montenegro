@@ -1,38 +1,38 @@
 <!-- views/professionals/edit.ejs -->
 <!DOCTYPE html>
-<html lang="sr-Latn-ME">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title>Izmjena radnika</title>
+    <title>Edit professional</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>Izmijeni radnika</h1>
-      <p>Ustanova: <%= institution.name %></p>
+      <h1>Edit professional</h1>
+      <p>Institution: <%= institution.name %></p>
 
       <form action="/institutions/<%= institution._id %>/professionals/<%= professional._id %>?_method=PUT" method="POST">
-        <label for="name">Ime i prezime:</label>
+        <label for="name">Full name:</label>
         <input type="text" name="name" id="name" value="<%= professional.name %>" required />
 
-        <label for="profession">Zanimanje:</label>
+        <label for="profession">Profession:</label>
         <select name="profession" id="profession" required>
-          <option value="Doktor medicine" <%= professional.profession === "Doktor medicine" ? "selected" : "" %>>Doktor medicine</option>
-          <option value="Medicinska sestra / tehničar" <%= professional.profession === "Medicinska sestra / tehničar" ? "selected" : "" %>>Medicinska sestra / tehničar</option>
-          <option value="Farmaceut" <%= professional.profession === "Farmaceut" ? "selected" : "" %>>Farmaceut</option>
-          <option value="Doktor stomatologije" <%= professional.profession === "Doktor stomatologije" ? "selected" : "" %>>Doktor stomatologije</option>
-          <option value="Laboratorijski tehničar" <%= professional.profession === "Laboratorijski tehničar" ? "selected" : "" %>>Laboratorijski tehničar</option>
+          <option value="Physician" <%= professional.profession === "Physician" ? "selected" : "" %>>Physician</option>
+          <option value="Nurse / Technician" <%= professional.profession === "Nurse / Technician" ? "selected" : "" %>>Nurse / Technician</option>
+          <option value="Pharmacist" <%= professional.profession === "Pharmacist" ? "selected" : "" %>>Pharmacist</option>
+          <option value="Dentist" <%= professional.profession === "Dentist" ? "selected" : "" %>>Dentist</option>
+          <option value="Laboratory technician" <%= professional.profession === "Laboratory technician" ? "selected" : "" %>>Laboratory technician</option>
         </select>
 
-        <label for="specialty">Specijalnost:</label>
+        <label for="specialty">Specialty:</label>
         <input type="text" name="specialty" id="specialty" value="<%= professional.specialty %>" />
 
-        <button type="submit">Sačuvaj izmjene</button>
+        <button type="submit">Save changes</button>
       </form>
 
-      <a href="/institutions/<%= institution._id %>">Nazad na ustanovu</a>
+      <a href="/institutions/<%= institution._id %>">Back to institution</a>
     </main>
   </body>
 </html>

@@ -12,13 +12,13 @@ const professionalSchema = new mongoose.Schema({
   specialty: {
     type: String,
   },
-  // Ustanova u kojoj radnik radi (jedan-prema-više)
+  // Institution where the professional works (one-to-many)
   institution: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Institution",
     required: true,
   },
-  // Korisnik koji je unio radnika
+  // User who created the professional
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

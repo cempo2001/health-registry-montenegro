@@ -2,26 +2,26 @@ const express = require("express");
 const router = express.Router();
 
 const Institution = require("../models/institution.js");
-const Professional = require("../models/professional.js"); // NOVO
+const Professional = require("../models/professional.js");
 const isSignedIn = require("../middleware/is-signed-in.js");
 
 // GET /institutions
 router.get("/", async (req, res) => {
   try {
-    // populate zamjenjuje ID vlasnika stvarnim dokumentom korisnika
+    // populate replaces the owner ID with the actual user document
     const institutions = await Institution.find({}).populate("owner");
     res.render("institutions/index.ejs", {
       institutions: institutions,
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Ustanove trenutno nije moguće prikazati.",
+      msg: "Institutions cannot be displayed right now.",
     });
   }
 });
 
 // GET /institutions/new
-// Mora biti PRIJE rute sa parametrom, inače Express "new" čita kao ID
+// Must come BEFORE the route with a parameter, otherwise Express reads "new" as an ID
 router.get("/new", isSignedIn, (req, res) => {
   res.render("institutions/new.ejs");
 });
@@ -29,13 +29,13 @@ router.get("/new", isSignedIn, (req, res) => {
 // POST /institutions
 router.post("/", isSignedIn, async (req, res) => {
   try {
-    // Vlasnik se uzima iz sesije, nikad iz forme
+    // The owner comes from the session, never from the form
     req.body.owner = req.session.user._id;
     await Institution.create(req.body);
     res.redirect("/institutions");
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Ustanova nije sačuvana. Provjerite unesene podatke.",
+      msg: "Institution was not saved. Please check the entered data.",
     });
   }
 });
@@ -49,11 +49,11 @@ router.get("/:institutionId", async (req, res) => {
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
-    // NOVO: radnici koji rade u ovoj ustanovi
+    // Professionals who work at this institution
     const professionals = await Professional.find({
       institution: institution._id,
     });
@@ -64,7 +64,7 @@ router.get("/:institutionId", async (req, res) => {
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Ustanovu trenutno nije moguće prikazati.",
+      msg: "This institution cannot be displayed right now.",
     });
   }
 });
@@ -76,14 +76,14 @@ router.get("/:institutionId/edit", isSignedIn, async (req, res) => {
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
-    // Zaštita na serveru: samo vlasnik smije otvoriti formu za izmjenu
+    // Server-side protection: only the owner may open the edit form
     if (!institution.owner.equals(req.session.user._id)) {
       return res.status(403).render("error.ejs", {
-        msg: "Nemate dozvolu da izmijenite ovu ustanovu.",
+        msg: "You do not have permission to edit this institution.",
       });
     }
 
@@ -92,7 +92,7 @@ router.get("/:institutionId/edit", isSignedIn, async (req, res) => {
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Formu za izmjenu trenutno nije moguće prikazati.",
+      msg: "The edit form cannot be displayed right now.",
     });
   }
 });
@@ -104,24 +104,24 @@ router.put("/:institutionId", isSignedIn, async (req, res) => {
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
     if (!institution.owner.equals(req.session.user._id)) {
       return res.status(403).render("error.ejs", {
-        msg: "Nemate dozvolu da izmijenite ovu ustanovu.",
+        msg: "You do not have permission to edit this institution.",
       });
     }
 
-    // Vlasnik se ne može mijenjati kroz formu, ni ručno poslanim zahtjevom
+    // The owner cannot be changed through the form or a hand-crafted request
     delete req.body.owner;
 
     await institution.updateOne(req.body);
     res.redirect(`/institutions/${req.params.institutionId}`);
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Izmjena nije sačuvana. Provjerite unesene podatke.",
+      msg: "Changes were not saved. Please check the entered data.",
     });
   }
 });
@@ -133,13 +133,13 @@ router.delete("/:institutionId", isSignedIn, async (req, res) => {
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
     if (!institution.owner.equals(req.session.user._id)) {
       return res.status(403).render("error.ejs", {
-        msg: "Nemate dozvolu da obrišete ovu ustanovu.",
+        msg: "You do not have permission to delete this institution.",
       });
     }
 
@@ -147,25 +147,25 @@ router.delete("/:institutionId", isSignedIn, async (req, res) => {
     res.redirect("/institutions");
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Ustanova nije obrisana. Pokušajte ponovo.",
+      msg: "Institution was not deleted. Please try again.",
     });
   }
 });
 
-// NOVO: GET /institutions/:institutionId/professionals/new
+// GET /institutions/:institutionId/professionals/new
 router.get("/:institutionId/professionals/new", isSignedIn, async (req, res) => {
   try {
     const institution = await Institution.findById(req.params.institutionId);
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
     if (!institution.owner.equals(req.session.user._id)) {
       return res.status(403).render("error.ejs", {
-        msg: "Nemate dozvolu da dodajete radnike u ovu ustanovu.",
+        msg: "You do not have permission to add professionals to this institution.",
       });
     }
 
@@ -174,41 +174,41 @@ router.get("/:institutionId/professionals/new", isSignedIn, async (req, res) => 
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Formu trenutno nije moguće prikazati.",
+      msg: "The form cannot be displayed right now.",
     });
   }
 });
 
-// NOVO: POST /institutions/:institutionId/professionals
+// POST /institutions/:institutionId/professionals
 router.post("/:institutionId/professionals", isSignedIn, async (req, res) => {
   try {
     const institution = await Institution.findById(req.params.institutionId);
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
     if (!institution.owner.equals(req.session.user._id)) {
       return res.status(403).render("error.ejs", {
-        msg: "Nemate dozvolu da dodajete radnike u ovu ustanovu.",
+        msg: "You do not have permission to add professionals to this institution.",
       });
     }
 
-    // Ustanova i vlasnik se uzimaju sa servera, nikad iz forme
+    // The institution and owner come from the server, never from the form
     req.body.institution = institution._id;
     req.body.owner = req.session.user._id;
     await Professional.create(req.body);
     res.redirect(`/institutions/${institution._id}`);
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Radnik nije sačuvan. Provjerite unesene podatke.",
+      msg: "Professional was not saved. Please check the entered data.",
     });
   }
 });
 
-// NOVO: GET /institutions/:institutionId/professionals/:professionalId/edit
+// GET /institutions/:institutionId/professionals/:professionalId/edit
 router.get(
   "/:institutionId/professionals/:professionalId/edit",
   isSignedIn,
@@ -219,20 +219,20 @@ router.get(
         req.params.professionalId
       );
 
-      // Radnik mora postojati i pripadati ustanovi iz adrese
+      // The professional must exist and belong to the institution in the URL
       if (
         !institution ||
         !professional ||
         !professional.institution.equals(institution._id)
       ) {
         return res.status(404).render("error.ejs", {
-          msg: "Radnik nije pronađen.",
+          msg: "Professional not found.",
         });
       }
 
       if (!institution.owner.equals(req.session.user._id)) {
         return res.status(403).render("error.ejs", {
-          msg: "Nemate dozvolu da izmijenite ovog radnika.",
+          msg: "You do not have permission to edit this professional.",
         });
       }
 
@@ -242,13 +242,13 @@ router.get(
       });
     } catch (error) {
       res.status(500).render("error.ejs", {
-        msg: "Formu trenutno nije moguće prikazati.",
+        msg: "The form cannot be displayed right now.",
       });
     }
   }
 );
 
-// NOVO: PUT /institutions/:institutionId/professionals/:professionalId
+// PUT /institutions/:institutionId/professionals/:professionalId
 router.put(
   "/:institutionId/professionals/:professionalId",
   isSignedIn,
@@ -259,24 +259,24 @@ router.put(
         req.params.professionalId
       );
 
-      // Radnik mora postojati i pripadati ustanovi iz adrese
+      // The professional must exist and belong to the institution in the URL
       if (
         !institution ||
         !professional ||
         !professional.institution.equals(institution._id)
       ) {
         return res.status(404).render("error.ejs", {
-          msg: "Radnik nije pronađen.",
+          msg: "Professional not found.",
         });
       }
 
       if (!institution.owner.equals(req.session.user._id)) {
         return res.status(403).render("error.ejs", {
-          msg: "Nemate dozvolu da izmijenite ovog radnika.",
+          msg: "You do not have permission to edit this professional.",
         });
       }
 
-      // Ustanova i vlasnik se ne mogu mijenjati kroz formu
+      // The institution and owner cannot be changed through the form
       delete req.body.owner;
       delete req.body.institution;
 
@@ -284,13 +284,13 @@ router.put(
       res.redirect(`/institutions/${institution._id}`);
     } catch (error) {
       res.status(500).render("error.ejs", {
-        msg: "Izmjena nije sačuvana. Provjerite unesene podatke.",
+        msg: "Changes were not saved. Please check the entered data.",
       });
     }
   }
 );
 
-// NOVO: DELETE /institutions/:institutionId/professionals/:professionalId
+// DELETE /institutions/:institutionId/professionals/:professionalId
 router.delete(
   "/:institutionId/professionals/:professionalId",
   isSignedIn,
@@ -301,20 +301,20 @@ router.delete(
         req.params.professionalId
       );
 
-      // Radnik mora postojati i pripadati ustanovi iz adrese
+      // The professional must exist and belong to the institution in the URL
       if (
         !institution ||
         !professional ||
         !professional.institution.equals(institution._id)
       ) {
         return res.status(404).render("error.ejs", {
-          msg: "Radnik nije pronađen.",
+          msg: "Professional not found.",
         });
       }
 
       if (!institution.owner.equals(req.session.user._id)) {
         return res.status(403).render("error.ejs", {
-          msg: "Nemate dozvolu da obrišete ovog radnika.",
+          msg: "You do not have permission to delete this professional.",
         });
       }
 
@@ -322,24 +322,24 @@ router.delete(
       res.redirect(`/institutions/${institution._id}`);
     } catch (error) {
       res.status(500).render("error.ejs", {
-        msg: "Radnik nije obrisan. Pokušajte ponovo.",
+        msg: "Professional was not deleted. Please try again.",
       });
     }
   }
 );
 
-// NOVO: POST /institutions/:institutionId/favorite
+// POST /institutions/:institutionId/favorite
 router.post("/:institutionId/favorite", isSignedIn, async (req, res) => {
   try {
     const institution = await Institution.findById(req.params.institutionId);
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
-    // Korisnik se uzima iz sesije; provjera sprječava dupliranje
+    // The user comes from the session; the check prevents duplicates
     const userId = req.session.user._id;
     const alreadyFavorited = institution.favoritedByUsers.some((id) =>
       id.equals(userId)
@@ -352,19 +352,19 @@ router.post("/:institutionId/favorite", isSignedIn, async (req, res) => {
     res.redirect(`/institutions/${institution._id}`);
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Ustanova nije dodata u omiljene.",
+      msg: "Institution could not be added to favorites.",
     });
   }
 });
 
-// NOVO: DELETE /institutions/:institutionId/favorite
+// DELETE /institutions/:institutionId/favorite
 router.delete("/:institutionId/favorite", isSignedIn, async (req, res) => {
   try {
     const institution = await Institution.findById(req.params.institutionId);
 
     if (!institution) {
       return res.status(404).render("error.ejs", {
-        msg: "Ustanova nije pronađena.",
+        msg: "Institution not found.",
       });
     }
 
@@ -375,7 +375,7 @@ router.delete("/:institutionId/favorite", isSignedIn, async (req, res) => {
     res.redirect(`/institutions/${institution._id}`);
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Ustanova nije uklonjena iz omiljenih.",
+      msg: "Institution could not be removed from favorites.",
     });
   }
 });

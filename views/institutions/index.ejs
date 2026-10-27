@@ -1,23 +1,23 @@
 <!-- views/institutions/index.ejs -->
 <!DOCTYPE html>
-<html lang="sr-Latn-ME">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title>Sve ustanove</title>
+    <title>All institutions</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>Zdravstvene ustanove</h1>
+      <h1>Healthcare institutions</h1>
 
       <% if (user) { %>
-        <a href="/institutions/new">Dodaj ustanovu</a>
+        <a href="/institutions/new">Add institution</a>
       <% } %>
 
       <% if (institutions.length === 0) { %>
-        <p>Još nema unesenih ustanova.</p>
+        <p>No institutions have been added yet.</p>
       <% } else { %>
         <ul>
           <% institutions.forEach((institution) => { %>
@@ -25,7 +25,7 @@
               <a href="/institutions/<%= institution._id %>"><%= institution.name %></a>
               (<%= institution.sector %>, <%= institution.type %>, <%= institution.city %>)
               <br />
-              Dodao/la: <%= institution.owner.username %>
+              Added by: <%= institution.owner.username %>
             </li>
           <% }) %>
         </ul>

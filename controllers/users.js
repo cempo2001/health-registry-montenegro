@@ -7,12 +7,12 @@ const isSignedIn = require("../middleware/is-signed-in.js");
 // GET /users/profile
 router.get("/profile", isSignedIn, async (req, res) => {
   try {
-    // Ustanove čiji niz omiljenih sadrži ID prijavljenog korisnika
+    // Institutions whose favorites array contains the signed-in user ID
     const favorites = await Institution.find({
       favoritedByUsers: req.session.user._id,
     });
 
-    // Ustanove koje je ovaj korisnik sam unio
+    // Institutions created by this user
     const myInstitutions = await Institution.find({
       owner: req.session.user._id,
     });
@@ -23,7 +23,7 @@ router.get("/profile", isSignedIn, async (req, res) => {
     });
   } catch (error) {
     res.status(500).render("error.ejs", {
-      msg: "Profil trenutno nije moguće prikazati.",
+      msg: "Your profile cannot be displayed right now.",
     });
   }
 });

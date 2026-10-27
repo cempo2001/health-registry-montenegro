@@ -1,53 +1,53 @@
 <!-- views/institutions/new.ejs -->
 <!DOCTYPE html>
-<html lang="sr-Latn-ME">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
-    <title>Nova ustanova</title>
+    <title>New institution</title>
   </head>
   <body>
     <%- include("../partials/_navbar.ejs") %>
     <main>
-      <h1>Dodaj ustanovu</h1>
+      <h1>Add institution</h1>
 
       <form action="/institutions" method="POST">
-        <label for="name">Naziv:</label>
+        <label for="name">Name:</label>
         <input type="text" name="name" id="name" required />
 
-        <label for="sector">Sektor:</label>
+        <label for="sector">Sector:</label>
         <select name="sector" id="sector" required>
-          <option value="Javna">Javna</option>
-          <option value="Privatna">Privatna</option>
+          <option value="Public">Public</option>
+          <option value="Private">Private</option>
         </select>
 
-        <label for="type">Vrsta ustanove:</label>
+        <label for="type">Institution type:</label>
         <select name="type" id="type" required>
-          <option value="Dom zdravlja">Dom zdravlja</option>
-          <option value="Bolnica">Bolnica</option>
-          <option value="Apoteka">Apoteka</option>
-          <option value="Ordinacija">Ordinacija</option>
-          <option value="Laboratorija">Laboratorija</option>
-          <option value="Stomatološka ordinacija">Stomatološka ordinacija</option>
+          <option value="Health center">Health center</option>
+          <option value="Hospital">Hospital</option>
+          <option value="Pharmacy">Pharmacy</option>
+          <option value="Clinic">Clinic</option>
+          <option value="Laboratory">Laboratory</option>
+          <option value="Dental clinic">Dental clinic</option>
         </select>
 
-        <label for="city">Grad:</label>
+        <label for="city">City:</label>
         <input type="text" name="city" id="city" required />
 
-        <label for="address">Adresa:</label>
+        <label for="address">Address:</label>
         <input type="text" name="address" id="address" />
 
-        <label for="phone">Telefon:</label>
+        <label for="phone">Phone:</label>
         <input type="text" name="phone" id="phone" />
 
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" />
 
-        <button type="submit">Sačuvaj ustanovu</button>
+        <button type="submit">Save institution</button>
       </form>
 
-      <a href="/institutions">Nazad na ustanove</a>
+      <a href="/institutions">Back to institutions</a>
     </main>
   </body>
 </html>

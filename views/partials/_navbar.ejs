@@ -1,16 +1,16 @@
 <!-- views/partials/_navbar.ejs -->
 <nav class="navbar">
-  <a class="brand" href="/">Registar zdravstva</a>
+  <a class="brand" href="/">Health Registry</a>
   <div class="nav-links">
-    <a href="/institutions">Ustanove</a>
+    <a href="/institutions">Institutions</a>
     <% if (user) { %>
-      <a href="/institutions/new">Dodaj ustanovu</a>
-      <a href="/users/profile">Moj profil</a>
-      <span>Prijavljen: <%= user.username %></span>
-      <a href="/auth/sign-out">Odjava</a>
+      <a href="/institutions/new">Add institution</a>
+      <a href="/users/profile">My profile</a>
+      <span>Signed in as: <%= user.username %></span>
+      <a href="/auth/sign-out">Sign out</a>
     <% } else { %>
-      <a href="/auth/sign-in">Prijava</a>
-      <a href="/auth/sign-up">Registracija</a>
+      <a href="/auth/sign-in">Sign in</a>
+      <a href="/auth/sign-up">Sign up</a>
     <% } %>
   </div>
 </nav>

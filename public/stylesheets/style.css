@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap");
 
-/* Paleta (svi parovi boja imaju kontrast najmanje 4.5:1) */
+/* Palette (every text/background pair has a contrast ratio of at least 4.5:1) */
 :root {
   --bg: #f4f8f7;
   --card: #ffffff;
@@ -27,7 +27,7 @@ body {
   background-color: var(--bg);
 }
 
-/* Navigacija */
+/* Navigation */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -62,7 +62,7 @@ body {
   gap: 1.25rem;
 }
 
-/* Glavni sadržaj */
+/* Main content */
 main {
   width: 100%;
   max-width: 960px;
@@ -85,7 +85,7 @@ main a {
   font-weight: 500;
 }
 
-/* Liste prikazane kao kartice (CSS Grid) */
+/* Lists shown as cards (CSS Grid) */
 main ul {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -101,7 +101,7 @@ main li {
   border-radius: 8px;
 }
 
-/* Forme */
+/* Forms */
 form {
   display: flex;
   flex-direction: column;
@@ -132,7 +132,7 @@ a:focus {
   outline-offset: 2px;
 }
 
-/* Dugmad */
+/* Buttons */
 button {
   align-self: flex-start;
   padding: 0.6rem 1.2rem;
@@ -150,7 +150,7 @@ button:hover {
   background-color: var(--primary-dark);
 }
 
-/* Dugmad za brisanje (forme koje šalju DELETE) */
+/* Delete buttons (forms that send DELETE) */
 form[action*="_method=DELETE"] button {
   background-color: var(--danger);
 }
