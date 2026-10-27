@@ -15,6 +15,7 @@ const passUserToView = require("./middleware/pass-user-to-view.js");
 
 const authController = require("./controllers/auth.js");
 const institutionsController = require("./controllers/institutions.js"); // NOVO
+const usersController = require("./controllers/users.js"); // NOVO
 
 const port = process.env.PORT ? process.env.PORT : "3000";
 
@@ -48,6 +49,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authController);
 app.use("/institutions", institutionsController); // NOVO
+app.use("/users", usersController); // NOVO
 
 // 404 mora biti zadnja ruta (Express 5: app.use umjesto app.get("*"))
 app.use((req, res) => {

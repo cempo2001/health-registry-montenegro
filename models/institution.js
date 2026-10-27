@@ -31,6 +31,13 @@ const institutionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  // NOVO: korisnici koji su ustanovu označili kao omiljenu (više-prema-više)
+  favoritedByUsers: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const Institution = mongoose.model("Institution", institutionSchema);

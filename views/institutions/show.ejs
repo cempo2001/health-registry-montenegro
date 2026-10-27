@@ -25,6 +25,20 @@
       <p>Email: <%= institution.email %></p>
     <% } %>
 
+    <h2>Omiljene</h2>
+    <p>Broj korisnika kojima je ustanova omiljena: <%= institution.favoritedByUsers.length %></p>
+    <% if (user) { %>
+      <% if (institution.favoritedByUsers.some((id) => id.equals(user._id))) { %>
+        <form action="/institutions/<%= institution._id %>/favorite?_method=DELETE" method="POST">
+          <button type="submit">Ukloni iz omiljenih</button>
+        </form>
+      <% } else { %>
+        <form action="/institutions/<%= institution._id %>/favorite" method="POST">
+          <button type="submit">Dodaj u omiljene</button>
+        </form>
+      <% } %>
+    <% } %>
+
     <h2>Zdravstveni radnici</h2>
     <% if (professionals.length === 0) { %>
       <p>Za ovu ustanovu još nema unesenih radnika.</p>

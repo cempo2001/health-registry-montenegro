@@ -328,4 +328,56 @@ router.delete(
   }
 );
 
+// NOVO: POST /institutions/:institutionId/favorite
+router.post("/:institutionId/favorite", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    // Korisnik se uzima iz sesije; provjera sprječava dupliranje
+    const userId = req.session.user._id;
+    const alreadyFavorited = institution.favoritedByUsers.some((id) =>
+      id.equals(userId)
+    );
+
+    if (!alreadyFavorited) {
+      await institution.updateOne({ $push: { favoritedByUsers: userId } });
+    }
+
+    res.redirect(`/institutions/${institution._id}`);
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Ustanova nije dodata u omiljene.",
+    });
+  }
+});
+
+// NOVO: DELETE /institutions/:institutionId/favorite
+router.delete("/:institutionId/favorite", isSignedIn, async (req, res) => {
+  try {
+    const institution = await Institution.findById(req.params.institutionId);
+
+    if (!institution) {
+      return res.status(404).render("error.ejs", {
+        msg: "Ustanova nije pronađena.",
+      });
+    }
+
+    await institution.updateOne({
+      $pull: { favoritedByUsers: req.session.user._id },
+    });
+
+    res.redirect(`/institutions/${institution._id}`);
+  } catch (error) {
+    res.status(500).render("error.ejs", {
+      msg: "Ustanova nije uklonjena iz omiljenih.",
+    });
+  }
+});
+
 module.exports = router;
