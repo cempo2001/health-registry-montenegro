@@ -22,6 +22,11 @@ const port = process.env.PORT ? process.env.PORT : "3000";
 
 mongoose.connect(process.env.MONGODB_URI);
 
+// Needed for hosting on Vercel (not from the lessons): spelling out the template engine and the views folder lets
+// Vercel see which files the app reads, so the .ejs files are included in the deployed bundle.
+app.engine("ejs", require("ejs").__express);
+app.set("views", path.join(__dirname, "views"));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride("_method"));
 app.use(morgan("dev"));

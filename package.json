@@ -9,6 +9,9 @@
     "seed": "node seed.js"
   },
   "license": "ISC",
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "bcrypt": "^6.0.0",
     "connect-mongo": "^5.1.0",
